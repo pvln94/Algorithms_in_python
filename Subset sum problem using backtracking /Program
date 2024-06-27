@@ -1,0 +1,35 @@
+# Function to check if a subset with the given target sum exists and to return that subset
+def subsetSum(set, n, target, subset):
+    # Base Case 1: If target is 0, we found a subset (empty subset is valid)
+    if target == 0:
+        return True
+    # Base Case 2: If no elements are left and target is not 0
+    if n == 0:
+        return False
+    # If the last element is greater than the target, ignore it
+    if set[n-1] > target:
+        return subsetSum(set, n-1, target, subset)
+    # Check if the target can be obtained by including or excluding the last element
+    if subsetSum(set, n-1, target-set[n-1], subset):
+        subset.append(set[n-1])
+        return True
+    return subsetSum(set, n-1, target, subset)
+
+# Driver code
+def solveSubsetSum(set, target):
+    subset = []
+    n = len(set)
+    if subsetSum(set, n, target, subset):
+        print("A subset with the given target sum exists: ", subset)
+    else:
+        print("No subset with the given target sum exists.")
+
+# Test the function
+set = [3, 34, 4, 12, 5, 2]
+target = 9
+solveSubsetSum(set, target)
+
+
+
+output:
+A subset with the given target sum exists:  [3, 4, 2]
