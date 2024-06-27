@@ -1,0 +1,74 @@
+# Function to check if a queen can be placed on board[row][col]
+def isSafe(board, row, col):
+    # Check this row on left side
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+
+    # Check upper diagonal on left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check lower diagonal on left side
+    for i, j in zip(range(row, len(board), 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    return True
+
+# Recursive utility function to solve the problem
+def solveNQueens(board, col):
+    # Base case: If all queens are placed, return true
+    if col >= 8:
+        return True
+
+    # Consider this column and try placing this queen in all rows one by one
+    for i in range(8):
+        if isSafe(board, i, col):
+            # Place this queen in board[i][col]
+            board[i][col] = 1
+
+            # Recur to place rest of the queens
+            if solveNQueens(board, col + 1):
+                return True
+
+            # If placing queen in board[i][col] doesn't lead to a solution,
+            # then remove queen from board[i][col] (backtrack)
+            board[i][col] = 0
+
+    # If the queen cannot be placed in any row in this column, return false
+    return False
+
+# Function to print the solution
+def printSolution(board):
+    for row in board:
+        print(" ".join("Q" if cell == 1 else "." for cell in row))
+    print()
+
+# Driver Code
+def solve8Queens():
+    # Step 1: Initialize the board
+    board = [[0 for _ in range(8)] for _ in range(8)]
+
+    # Step 2: Call the recursive backtracking function
+    if solveNQueens(board, 0):
+        # Step 3: Print the solution if it exists
+        printSolution(board)
+    else:
+        # Step 4: Indicate if no solution exists
+        print("No solution exists")
+
+# Step 5: Run the main function
+solve8Queens()
+
+
+Output:
+Q . . . . . . .
+. . . . . . Q .
+. . . . Q . . .
+. . . . . . . Q
+. Q . . . . . .
+. . . Q . . . .
+. . . . . Q . .
+. . Q . . . . .
